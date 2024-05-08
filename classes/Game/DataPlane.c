@@ -1,10 +1,14 @@
-#include "Plane.h"
+#include "DataPlane.h"
 
 typedef struct DataPlane_t {
     u8 w;
     u8 h;
     u8 *data;
 } DataPlane_t;
+
+static const CellState const FRIEND_CONVERTER[] = {
+    C_EMPTY, C_V1, C_V2, C_V3, C_V4, C_V5, C_V6, C_V7, C_V8,
+};
 
 static void add_number(DataPlane_t *self, u8 x, u8 y, u8 h, u8 w) {
     u8 state = self->data[y * h + x];
@@ -17,35 +21,6 @@ static void add_number(DataPlane_t *self, u8 x, u8 y, u8 h, u8 w) {
                 frieds += self->data[ii * h + jj] == C_MINE ? 1 : 0;
             }
         }
-        // switch (frieds) {
-        //     case 0:
-        //         self->data[y * h + x] = C_EMPTY;
-        //         break;
-        //     case 1:
-        //         self->data[y * h + x] = C_V1;
-        //         break;
-        //     case 2:
-        //         self->data[y * h + x] = C_V2;
-        //         break;
-        //     case 3:
-        //         self->data[y * h + x] = C_V3;
-        //         break;
-        //     case 4:
-        //         self->data[y * h + x] = C_V4;
-        //         break;
-        //     case 5:
-        //         self->data[y * h + x] = C_V5;
-        //         break;
-        //     case 6:
-        //         self->data[y * h + x] = C_V6;
-        //         break;
-        //     case 7:
-        //         self->data[y * h + x] = C_V7;
-        //         break;
-        //     case 8:
-        //         self->data[y * h + x] = C_V8;
-        //         break;
-        // }
         if (0 == frieds) {
             self->data[y * h + x] = C_EMPTY;
         } else if (1 == frieds) {
@@ -66,36 +41,6 @@ static void add_number(DataPlane_t *self, u8 x, u8 y, u8 h, u8 w) {
             self->data[y * h + x] = C_V8;
         }
     }
-
-    // switch (frieds) {
-    //     case 0:
-    //         self->data[y * h + x] = C_EMPTY;
-    //         break;
-    //     case 1:
-    //         self->data[y * h + x] = C_V1;
-    //         break;
-    //     case 2:
-    //         self->data[y * h + x] = C_V2;
-    //         break;
-    //     case 3:
-    //         self->data[y * h + x] = C_V3;
-    //         break;
-    //     case 4:
-    //         self->data[y * h + x] = C_V4;
-    //         break;
-    //     case 5:
-    //         self->data[y * h + x] = C_V5;
-    //         break;
-    //     case 6:
-    //         self->data[y * h + x] = C_V6;
-    //         break;
-    //     case 7:
-    //         self->data[y * h + x] = C_V7;
-    //         break;
-    //     case 8:
-    //         self->data[y * h + x] = C_V8;
-    //         break;
-    // }
 }
 
 static void fill_plane(DataPlane_t *self) {
@@ -109,11 +54,11 @@ static void fill_plane(DataPlane_t *self) {
             self->data[y * h + x] = (putMine ? C_MINE : C_EMPTY);
         }
     }
-    for (u8 y = 0; y < h; y++) {
-        for (u8 x = 0; x < w; x++) {
-            add_number(self, x, y, h, w);
-        }
-    }
+    // for (u8 y = 0; y < h; y++) {
+    //     for (u8 x = 0; x < w; x++) {
+    //         add_number(self, x, y, h, w);
+    //     }
+    // }
 }
 
 static DataPlane_t *new(PlaneSize size) {
@@ -138,7 +83,7 @@ static DataPlane_t *new(PlaneSize size) {
         default:
             plane->h = 4;
             plane->w = 4;
-            s = 16;
+            s = 4 * 4;
             break;
     }
     plane->data = malloc(s * sizeof(u8));
@@ -148,7 +93,22 @@ static DataPlane_t *new(PlaneSize size) {
 
 static CellState get_cell_state(DataPlane_t *self, u8 x, u8 y) {
     u8 h = self->h;
-    return self->data[y * h + x];
+    u8 w = self->w;
+    u8 cell = self->data[y * h + x];
+    if (C_MINE == cell) {
+        return C_MINE;
+    }
+    u8 friends = 0;
+    u8 yy = 0;
+    u8 xx = 0;
+    for (s8 dy = -1; dy <= 1; dy++) {
+        for (s8 dx = -1; dx <= 1; dx++) {
+            yy = (h + y + dy) % h;
+            xx = (w + x + dx) % w;
+            friends += (self->data[yy * h + xx] == C_MINE);
+        }
+    }
+    return FRIEND_CONVERTER[friends];
 }
 
 static void set_flag(DataPlane_t *self, u8 x, u8 y) {

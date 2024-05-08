@@ -4,8 +4,8 @@
 #include <gb/cgb.h>
 #include <gb/gb.h>
 
-#include "../include/short_types.h"
-#include "Plane.h"
+#include "../../include/short_types.h"
+#include "DataPlane.h"
 
 typedef struct GameVisualiser_t GameVisualiser_t;
 typedef GameVisualiser_t* pGameVisualiser_t;

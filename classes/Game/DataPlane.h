@@ -5,14 +5,10 @@
 #include <rand.h>
 #include <stdlib.h>
 
-#include "../include/short_types.h"
+#include "../../include/short_types.h"
 #include "GameEnums.h"
-typedef struct DataPlane_t DataPlane_t;
 
-/*
-    DataPlane знает о минах
-    GamePlane знает об открытых тайлах
-*/
+typedef struct DataPlane_t DataPlane_t;
 
 extern const struct DataPlaneClass {
     DataPlane_t *(*new)(PlaneSize size);
