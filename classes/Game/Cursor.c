@@ -1,5 +1,7 @@
 #include "Cursor.h"
 
+#include "../../data/cursores.h"
+
 typedef struct Cursor_t {
     u8 nb;
     u8 nbPalette;
@@ -16,57 +18,40 @@ static palette_color_t cPalette[] = {
     cursoreDataCGBPal0c3,
 };
 
-static Cursor_t cursor = {
-    .nbPalette = 0,
-    .palette = cPalette,
-    .data = cursoreData,
-};
-
-static Cursor_t *make(u8 nb, u8 tile) {
-    cursor.nb = nb;
-    cursor.nbPalette = cursoreDataCGB[0];
-    cursor.x = cursor.y = 0;
+static Cursor_t *new(u8 nb, u8 tile) {
+    Cursor_t *self = malloc(sizeof(Cursor_t));
+    self->nb = nb;
+    self->data = cursoreData;
+    self->nbPalette = cursoreDataCGB[0];
+    self->palette = cPalette;
+    self->x = 0;
+    self->y = 0;
     set_sprite_tile(nb, tile);
-    return &cursor;
+    return self;
 }
 
-static void move(u8 x, u8 y) {  //
-    cursor.x = x;
-    cursor.y = y;
+static void move(Cursor_t *self, u8 x, u8 y) {
+    self->x = x;
+    self->y = y;
 }
 
-static void scroll(s8 dx, s8 dy) {  //
-    cursor.x += dx;
-    cursor.y += dy;
+static void scroll(Cursor_t *self, s8 dx, s8 dy) {
+    self->x += dx;
+    self->y += dy;
 }
 
-static u8 get_nb(void) {  //
-    return cursor.nb;
-}
-
-static u8 get_nb_palette(void) {  //
-    return cursor.nbPalette;
-}
-
-static u8 *_get_data(void) {  //
-    return cursor.data;
-}
-
-static palette_color_t *_get_palette(void) {  //
-    return cursor.palette;
-}
-
-static u8 get_x(void) {  //
-    return cursor.x;
-}
-
-static u8 get_y(void) {  //
-    return cursor.y;
-}
+static palette_color_t *_get_palette(Cursor_t *self) { return self->palette; }
+static u8 get_nb_palette(Cursor_t *self) { return self->nbPalette; }
+static u8 *_get_data(Cursor_t *self) { return self->data; }
+static u8 get_nb(Cursor_t *self) { return self->nb; }
+static u8 get_x(Cursor_t *self) { return self->x; }
+static u8 get_y(Cursor_t *self) { return self->y; }
+static void delete(Cursor_t *self) { free(self); }
 
 const struct CursorClass Cursor = {
 
-    .make = make,
+    .new = new,
+    .delete = delete,
     .move = move,
     .scroll = scroll,
     .get_nb = get_nb,

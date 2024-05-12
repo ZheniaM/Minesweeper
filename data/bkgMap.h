@@ -7,7 +7,7 @@
  Info:
    Section       : 
    Bank          : 0
-   Map size      : 20 x 18
+   Map size      : 32 x 32
    Tile set      : bkg.gbr
    Plane count   : 2 planes (16 bits)
    Plane order   : Planes are continues
@@ -18,8 +18,8 @@
 
 */
 
-#define bkgMapWidth 20
-#define bkgMapHeight 18
+#define bkgMapWidth 32
+#define bkgMapHeight 32
 #define bkgMapBank 0
 
 #define bkgMap bkgMapPLN0

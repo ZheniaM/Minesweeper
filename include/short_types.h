@@ -3,20 +3,19 @@
 
 #include <types.h>
 
-typedef uint8_t u8;
-typedef uint16_t u16;
-typedef uint32_t u32;
+// typedef uint8_t u8;
+// typedef uint16_t u16;
+// typedef uint32_t u32;
 
-typedef uint8_t* pu8;
-typedef uint16_t* pu16;
-typedef uint32_t* pu32;
+// typedef int8_t s8;
+// typedef int16_t s16;
+// typedef int32_t s32;
 
-typedef int8_t s8;
-typedef int16_t s16;
-typedef int32_t s32;
+typedef unsigned char u8;
+typedef unsigned short u16;
+typedef unsigned long u32;
 
-typedef int8_t* ps8;
-typedef int16_t* ps16;
-typedef int32_t* ps32;
-
+typedef signed char s8;
+typedef signed short s16;
+typedef signed long s32;
 #endif  // __SHORT_TYPES_H

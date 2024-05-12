@@ -1,29 +1,32 @@
 #ifndef __GAME_ENUMS_H
 #define __GAME_ENUMS_H
 
-typedef enum PlaneSize {
-    PS_10x10,
-    PS_16x16,
-    PS_32x32,
-} PlaneSize;
-
-typedef enum CellState {
-    C_EMPTY,
-    C_V1,
-    C_V2,
-    C_V3,
-    C_V4,
-    C_V5,
-    C_V6,
-    C_V7,
-    C_V8,
-    C_FLAG,
-    C_MINE,
-} CellState;
-
 typedef enum CleanResult {
-    CR_SUCCESS,
     CR_MINEHERE,
+    CR_SUCCESS,
 } CleanResult;
 
+/* 0b<2nothing><1flag><1mine><4neighbours>
+
+    exmaple:
+    0b00000000 is 0 neighbours
+    0b00001000 is 8 neighbours
+    0b00010000 is mine
+    0b00110000 is mine with flag
+*/
+enum CellState {
+    CS_N0,
+    CS_N1,
+    CS_N2,
+    CS_N3,
+    CS_N4,
+    CS_N5,
+    CS_N6,
+    CS_N7,
+    CS_N8,
+    CS_MINE = 0x10,
+    CS_FLAG = 0x20,
+    CS_VISIBLE = 0x40,
+    CS_HAS_FRIENDS = 0x80,
+};
 #endif  // __GAME_ENUMS_H

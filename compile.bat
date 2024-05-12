@@ -14,21 +14,19 @@ set CC=c:\gbdk\bin\lcc -Wa-l -Wl-m -Wl-j
 %CC% -c -o data/bkg.o data/bkg.c
 %CC% -c -o data/bkgMap.o  data/bkgMap.c
 %CC% -c -o data/cursores.o data/cursores.c
-@REM %CC% -c -o data/window.o data/window.c
 set data=data/bkg.o data/bkgMap.o data/sprites.o data/cursores.o 
-@REM data/window.o
 
 @REM INCLUDE
-@REM %CC% -c -o include/Sprite.o include/Sprite.c
-@REM %CC% -c -o include/BKG.o include/BKG.c
-@REM %CC% -c -o include/OAM.o include/OAM.c
-@REM set include=include/Sprite.o include/BKG.o include/OAM.o
+%CC% -c -o include/printer.o include/printer.c
+set incl=include/printer.o
 
 @REM GAME
-%CC% -c -o classes/Game/DataPlane.o classes/Game/DataPlane.c
+%CC% -c -o classes/Game/PlaneData.o classes/Game/PlaneData.c
 %CC% -c -o classes/Game/GameVisualiser.o  classes/Game/GameVisualiser.c
 %CC% -c -o classes/Game/Cursor.o classes/Game/Cursor.c
-set game=classes/Game/DataPlane.o classes/Game/GameVisualiser.o classes/Game/Cursor.o
+%CC% -c -o classes/Game/PlaneFabric.o classes/Game/PlaneFabric.c
+%CC% -c -o classes/Game/GameLogic.o classes/Game/GameLogic.c
+set game=classes/Game/PlaneData.o classes/Game/GameVisualiser.o classes/Game/Cursor.o classes/Game/PlaneFabric.o classes/Game/GameLogic.o
 
 set classes=%game%
 
@@ -38,7 +36,7 @@ if %FORMAT% EQU gbc (
 ) else (
 	set CREATE_BIN=%CC% -o %PROJNAME%.%FORMAT% 
 )
-%CREATE_BIN% %data% %classes% main.o
+%CREATE_BIN% %data% %classes% %incl% main.o
 
 @REM delete intermediate files created for the conmpilation process
 DEL /S *.asm > NUL 2>&1
