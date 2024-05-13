@@ -17,8 +17,10 @@ extern const struct PlaneDataClass {
     u8 (*get_height)(PlaneData_t *self);
     u8 (*get_mines)(PlaneData_t *self);
     u8 (*get_cell_state)(PlaneData_t *self, u8 x, u8 y);
-    void (*set_flag)(PlaneData_t *self, u8 x, u8 y);
-    CleanResult (*clean_from_mine)(PlaneData_t *self, u8 x, u8 y);
+    // returns 1 if set and 0 if unset
+    u8 (*set_flag)(PlaneData_t *self, u8 x, u8 y);
+    // returns 1 if success and 0 if there was mine
+    u8 (*clean_from_mine)(PlaneData_t *self, u8 x, u8 y);
 } PlaneData;
 
 #endif  // __PLANE_DATA_H

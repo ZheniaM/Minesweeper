@@ -29,6 +29,7 @@ static void make(u8 w, u8 h, u8 numOfMines) {
     GameVisualiser.show_cursor(gl->cursor);
     GameVisualiser.draw_rect_of_blocks(w, 0, 32 - w, h);
     GameVisualiser.draw_rect_of_blocks(0, h, 32, 32 - h);
+    GameVisualiser.draw_plane(gl->plane, 10, 0);
 }
 
 static void delete(void) {
@@ -50,15 +51,23 @@ static u8 make_cycle(void) {
     s8 dy = 0;
     u8 x = Cursor.get_x(gl->cursor);
     u8 y = Cursor.get_y(gl->cursor);
-    win_num_print(0, 1, j);
+    win_num_print(12, 0, x);
+    win_num_print(12, 1, y);
     if (J_A == j) {
-        PlaneData.clean_from_mine(gl->plane, x, y);
-        goto draw;
+        if (PlaneData.clean_from_mine(gl->plane, x, y)) {
+            reveal(x, y);
+            return 0;
+        }
+        // GameVisualiser.draw_gameover();
+        return 1;
+
     } else if (J_B == j) {
-        PlaneData.set_flag(gl->plane, x, y);
-        goto draw;
-        // } else if (J_START == j) {
-        // } else if (J_SELECT == j) {
+        if (PlaneData.set_flag(gl->plane, x, y)) {
+            reveal(x, y);
+            return 0;
+        }
+        // GameVisualiser.draw_nothing(x, y);
+        return 0;
     }
     if (j & J_UP) {
         dy -= 1;
@@ -75,11 +84,6 @@ static u8 make_cycle(void) {
     GameVisualiser.scroll_cursor(gl->cursor, dx, dy,
                                  PlaneData.get_width(gl->plane),
                                  PlaneData.get_height(gl->plane));
-    return 0;
-
-draw:
-    u8 cell = PlaneData.get_cell_state(gl->plane, x, y);
-    GameVisualiser.draw_cell(cell, x, y);
     return 0;
 }
 

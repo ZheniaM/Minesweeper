@@ -11,9 +11,11 @@
 typedef struct GameVisualiser_t GameVisualiser_t;
 
 extern const struct GameVisualiserClass {
-    void (*draw_plane)(PlaneData_t *plane);
+    void (*draw_plane)(PlaneData_t *plane, u8 x, u8 y);
     void (*draw_cell)(u8 cell, u8 x, u8 y);
     void (*draw_rect_of_blocks)(u8 x, u8 y, u8 w, u8 h);
+    // void (*draw_nothing)(u8 x, u8 y);
+    // void (*draw_gameover)(void);
     void (*show_cursor)(Cursor_t *cursor);
     void (*scroll_cursor)(Cursor_t *cursor, s8 dx, s8 dy, u8 w, u8 h);
 } GameVisualiser;

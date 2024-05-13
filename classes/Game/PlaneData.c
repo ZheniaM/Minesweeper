@@ -9,9 +9,6 @@ static u8 get_cell_state(PlaneData_t *self, u8 x, u8 y) {
     u8 h = self->h;
     u8 w = self->w;
     u8 cell = self->data[y * w + x];
-    if (cell & CS_HAS_FRIENDS) {
-        return cell & 0x0f;
-    }
     if (cell & CS_FLAG) {
         return cell;
     }
@@ -30,20 +27,32 @@ static u8 get_cell_state(PlaneData_t *self, u8 x, u8 y) {
             }
         }
     }
-    self->data[y * self->w + x] |= friends | CS_HAS_FRIENDS;
-    return friends;
+    // win_num_print(4, 0, self->data[y * self->w + x]);
+    return self->data[y * self->w + x] | friends;
 }
+// static u8 get_cell_state(PlaneData_t *self, u8 x, u8 y) {
+//     u8 cell = get_cell_state_DEBUG(self, x, y);
+//     self->data[y * self->w + x] |= CS_VISIBLE;
+//     return cell | CS_VISIBLE;
+// }
 
-static void set_flag(PlaneData_t *self, u8 x, u8 y) {
+static u8 set_flag(PlaneData_t *self, u8 x, u8 y) {
     if (self->data[y * self->w + x] & CS_FLAG) {
+        // unset
         self->data[y * self->w + x] &= ~CS_FLAG;
-    } else {
-        self->data[y * self->w + x] |= CS_FLAG;
+        return 0;
     }
+    // set
+    self->data[y * self->w + x] |= CS_FLAG;
+    return 1;
 }
 
-static CleanResult clean_from_mine(PlaneData_t *self, u8 x, u8 y) {
-    return (self->data[y * self->w + x] & CS_MINE) ? CR_MINEHERE : CR_SUCCESS;
+static u8 clean_from_mine(PlaneData_t *self, u8 x, u8 y) {
+    self->data[y * self->w + x] |= CS_VISIBLE;
+    if (self->data[y * self->w + x] & CS_MINE) {
+        return 0;
+    }
+    return 1;
 }
 
 static u8 *get_plane_data(PlaneData_t *self) { return self->data; }

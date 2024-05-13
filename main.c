@@ -44,10 +44,10 @@ int main(void) {
     }
 
     set_bkg_palette(0, 8, &bkgPalette[0]);
-    set_bkg_data(0, 28, bkgTiles);
+    set_bkg_data(0, 47, bkgTiles);
     // set map to video bank 1
     VBK_REG = VBK_BANK_1;
-    set_bkg_tiles(0, 0, bkgMapWidth, bkgMapHeight, bkgMapPLN1);
+    // set_bkg_tiles(0, 0, bkgMapWidth, bkgMapHeight, bkgMapPLN1);
     set_win_tiles(0, 0, 20, 2, smileColors);
     // set map to video bank 0
     VBK_REG = VBK_BANK_0;
@@ -55,7 +55,7 @@ int main(void) {
     set_win_tiles(0, 0, 20, 2, smile);
     move_win(7, 128);
     SHOW_WIN;
-    GameLogic.make(10, 10, 10);
+    GameLogic.make(8, 8, 10);
 
     SHOW_SPRITES;
     SHOW_BKG;

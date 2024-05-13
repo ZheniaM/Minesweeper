@@ -1,11 +1,6 @@
 #ifndef __GAME_ENUMS_H
 #define __GAME_ENUMS_H
 
-typedef enum CleanResult {
-    CR_MINEHERE,
-    CR_SUCCESS,
-} CleanResult;
-
 /* 0b<2nothing><1flag><1mine><4neighbours>
 
     exmaple:
@@ -24,9 +19,8 @@ enum CellState {
     CS_N6,
     CS_N7,
     CS_N8,
-    CS_MINE = 0x10,
-    CS_FLAG = 0x20,
-    CS_VISIBLE = 0x40,
-    CS_HAS_FRIENDS = 0x80,
+    CS_MINE = 0x10U,
+    CS_FLAG = 0x20U,
+    CS_VISIBLE = 0x40U,
 };
 #endif  // __GAME_ENUMS_H

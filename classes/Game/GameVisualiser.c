@@ -1,7 +1,7 @@
 #include "GameVisualiser.h"
 
-#include "__PlaneData.h"
-// #include "printer.h"
+#include "../../include/printer.h"
+// #include "__PlaneData.h"
 
 static void set_mine(u8 x, u8 y) {
     VBK_REG = VBK_BANK_1;
@@ -53,23 +53,60 @@ static void set_number(u8 x, u8 y, u8 num) {
     set_bkg_tile_xy(x, y, num);
 }
 
+// static void draw_nothing(u8 x, u8 y) {
+//     VBK_REG = VBK_BANK_1;
+//     set_bkg_tile_xy(x, y, 0);
+//     VBK_REG = VBK_BANK_0;
+//     set_bkg_tile_xy(x, y, 0x0fU);
+// }
+
 static void draw_cell(u8 cell, u8 x, u8 y) {
-    if (cell & CS_FLAG) {
-        set_flag(x, y);
-    } else if (cell & CS_MINE) {
-        set_mine(x, y);
-    } else {
-        set_number(x, y, cell & 0x0f);
+    win_num_print(0, 1, cell);
+    switch (cell & 0xf0U) {
+        case 0:
+            win_num_print(0, 0, 0);
+            set_number(x, y, 0);
+            break;
+
+        case (CS_FLAG | 0000000 | 0000000000):
+        case (CS_FLAG | CS_MINE | 0000000000):
+        case (CS_FLAG | 0000000 | CS_VISIBLE):
+        case (CS_FLAG | CS_MINE | CS_VISIBLE):
+            win_num_print(0, 0, 1);
+            set_number(x, y, 0);
+            set_flag(x, y);
+            break;
+
+        case (CS_MINE | 0000000000):
+        case (CS_MINE | CS_VISIBLE):
+            win_num_print(0, 0, 2);
+            set_mine(x, y);
+            break;
+
+        case (CS_VISIBLE):
+            win_num_print(0, 0, 3);
+            set_number(x, y, cell & 0x0f);
+            break;
+
+        default:
+            win_num_print(0, 0, 255U);
+            // draw_nothing(x, y);
+            break;
     }
 }
 
-static void draw_plane(PlaneData_t *plane) {
+static void draw_plane(PlaneData_t *plane, u8 left, u8 top) {
     u8 w = PlaneData.get_width(plane);
     u8 h = PlaneData.get_height(plane);
-
+    u8 cell = 0;
     for (u8 y = 0; y < h; y++) {
         for (u8 x = 0; x < w; x++) {
-            draw_cell(PlaneData.get_cell_state(plane, x, y), x, y);
+            cell = PlaneData.get_cell_state(plane, x, y);
+            if (cell & CS_MINE) {
+                set_mine(left + x, top + y);
+            } else {
+                set_number(left + x, top + y, cell & 0x0f);
+            }
         }
     }
 }
@@ -106,13 +143,18 @@ static void draw_rect_of_blocks(u8 x, u8 y, u8 w, u8 h) {
     VBK_REG = VBK_BANK_0;
     for (u8 i = 0; i < h; i++) {
         for (u8 j = 0; j < w; j++) {
-            blocks[i * w + j] = 27;
+            blocks[i * w + j] = 0x26U;
         }
     }
     set_bkg_tiles(x, y, w, h, blocks);
 
     free(blocks);
 }
+
+// static void draw_gameover(void) {
+//     u8 text[] = {40, 41, 42, 43, 44, 45, 43, 46};
+//     set_win_tiles(6, 0, 8, 1, text);
+// }
 
 const struct GameVisualiserClass GameVisualiser = {
 
@@ -121,5 +163,7 @@ const struct GameVisualiserClass GameVisualiser = {
     .show_cursor = show_cursor,
     .scroll_cursor = scroll_cursor,
     .draw_rect_of_blocks = draw_rect_of_blocks,
+    // .draw_nothing = draw_nothing,
+    // .draw_gameover = draw_gameover,
 
 };
