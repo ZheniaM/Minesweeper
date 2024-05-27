@@ -4,10 +4,9 @@
 #include "../../include/short_types.h"
 #include "../Logic.h"
 
-extern const struct GameLogicClass {
-    void (*make)(u8 w, u8 h, u8 numOfMines);
-    Logic logic;
-    void (*delete)(void);
+extern struct GameLogicClass {
+    Logic *logic;
+    void (*start)(void);  //(u8 w, u8 h, u8 numOfMines);
 } GameLogic;
 
 #endif  // __GAME_LOGIC_H

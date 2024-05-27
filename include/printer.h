@@ -3,6 +3,7 @@
 
 #include "short_types.h"
 
-void win_num_print(u8 x, u8 y, u8 num);
+void win_num_print8(u8 x, u8 y, u8 num);
+void win_num_print16(u8 x, u8 y, u16 num);
 
 #endif  // __PRINTER_H

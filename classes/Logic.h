@@ -5,9 +5,22 @@
 
 #include "../include/short_types.h"
 
+#define IDLE_SCENE 0U
+#define TITLE_SCENE 1U
+#define GAME_SCENE 2U
+#define END_SCENE 4U
+#define GAMEOVER_SCENE 8U
+
 typedef struct LogicClass {
-    // return 0 if scene don't change
+    /*
+        returns:
+        IDLE_SCENE if scene doesn't change
+        TITLE_SCENE
+        GAME_SCENE
+        END_SCENE
+    */
     u8 (*make_cycle)(void);
+    void (*delete)(void);
 } Logic;
 
 #endif  // __LOGIC_H
