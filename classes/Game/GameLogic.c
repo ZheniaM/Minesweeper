@@ -16,9 +16,10 @@
 
 typedef struct GameLogic_t {
     u16 time;
+    u16 cleared_cells;
     u8 mines_left;
     u8 size;
-    u16 cleared_cells;
+    u8 state;
     PlaneData_t *plane;
     Cursor_t *cursor;
 } GameLogic_t;
@@ -40,7 +41,7 @@ static void download_tiles(void) {
 
     // set map to video bank 1
     VBK_REG = VBK_BANK_1;
-    // set_bkg_tiles(0, 0, bkgMapWidth, bkgMapHeight, bkgMapPLN1);
+    set_bkg_tiles(0, 0, bkgMapWidth, bkgMapHeight, bkgMapPLN1);
     set_win_tiles(0, 0, 20, 2, smileColors);
     // set map to video bank 0
     VBK_REG = VBK_BANK_0;
@@ -51,10 +52,10 @@ static void download_tiles(void) {
     u8 mines[] = "MINES";
     u8 time[] = "TIME";
     Inscription_t inscrs[] = {
-        {.x = 0, .y = 0, .size = 4, .title = time},   //
         {.x = 0, .y = 1, .size = 5, .title = mines},  //
+        {.x = 0, .y = 0, .size = 4, .title = time},   //
     };
-    GameVisualiser.draw_inscriptions(2, inscrs);
+    GameVisualiser.draw_inscriptions(1, inscrs);
 }
 
 static void start(void) {  //(u8 w, u8 h, u8 numOfMines) {
@@ -74,10 +75,10 @@ static void start(void) {  //(u8 w, u8 h, u8 numOfMines) {
     GameVisualiser.show_cursor(gl->cursor);
     GameVisualiser.draw_rect_of_blocks(w, 0, 32 - w, h);
     GameVisualiser.draw_rect_of_blocks(0, h, 32, 32 - h);
-    // GameVisualiser.draw_plane(gl->plane, 10, 0);
 }
 
 static void delete(void) {
+    hide_sprite(Cursor.get_nb(gl->cursor));
     Cursor.delete(gl->cursor);
     PlaneData.delete(gl->plane);
     free(gl);
@@ -96,7 +97,7 @@ void increment_time(void) {
 }
 
 static u8 make_cycle(void) {
-    increment_time();
+    // increment_time();
     win_num_print8(6, 1, gl->mines_left);
 
     u8 v = 5;
@@ -104,7 +105,7 @@ static u8 make_cycle(void) {
     for (u8 i = 1; i < v; i++) {
         r += (i << 1);
     }
-    win_num_print8(14, 0, r);
+    // win_num_print8(14, 0, r);
 
     if (0 == gl->mines_left) {
         return END_SCENE;

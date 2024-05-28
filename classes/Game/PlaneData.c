@@ -48,6 +48,9 @@ static u8 set_flag(PlaneData_t *self, u8 x, u8 y) {
 }
 
 static u8 clean_from_mine(PlaneData_t *self, u8 x, u8 y) {
+    if (self->data[y * self->w + x] & CS_FLAG) {
+        return 1;
+    }
     self->data[y * self->w + x] |= CS_VISIBLE;
     if (self->data[y * self->w + x] & CS_MINE) {
         return 0;

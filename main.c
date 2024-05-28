@@ -6,6 +6,7 @@
 #include "classes/GameOver/GOLogic.h"
 #include "classes/Logic.h"
 #include "classes/Title/TitleLogic.h"
+#include "classes/Winner/WinnerLogic.h"
 #include "data/bkg.h"
 #include "data/cursores.h"
 #include "include/short_types.h"
@@ -69,25 +70,35 @@ int main(void) {
                 break;
 
             case GAME_SCENE:
+                DISPLAY_OFF;
                 l->delete ();
                 l = GameLogic.logic;
                 GameLogic.start();  // (8, 8, 10);
+                DISPLAY_ON;
                 break;
 
             case END_SCENE:
-                set_win_tile_xy(18, 0, 10);
+                DISPLAY_OFF;
+                l->delete ();
+                l = WinnerLogic.logic;
+                WinnerLogic.start();
+                DISPLAY_ON;
                 break;
 
             case TITLE_SCENE:
+                DISPLAY_OFF;
                 l->delete ();
                 l = TitleLogic.logic;
                 TitleLogic.start();
+                DISPLAY_ON;
                 break;
 
             case GAMEOVER_SCENE:
+                DISPLAY_OFF;
                 l->delete ();
                 l = GOLogic.logic;
                 GOLogic.start();
+                DISPLAY_ON;
                 break;
         }
         frame = get_time();

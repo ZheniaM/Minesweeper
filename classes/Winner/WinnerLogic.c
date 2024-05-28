@@ -1,11 +1,11 @@
-#include "GOLogic.h"
+#include "WinnerLogic.h"
 
-#include "GOVisualiser.h"
+#include "WinnerVisualiser.h"
 
 static s8 dh = 0;
 
 static void start(void) {
-    GOVisualiser.draw_gameover();
+    WinnerVisualiser.draw_winner();
     dh = 24;
 }
 
@@ -37,7 +37,7 @@ static void delete(void) { return; }
 
 static Logic l = {.make_cycle = make_cycle, .delete = delete};
 
-struct GOLogicClass GOLogic = {
+struct WinnerLogicClass WinnerLogic = {
 
     .logic = &l,
     .start = start,

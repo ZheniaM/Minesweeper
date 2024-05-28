@@ -1,8 +1,8 @@
-#include "GOVisualiser.h"
+#include "WinnerVisualiser.h"
 
 #include <gb/gb.h>
 
-static void draw_gameover(void) {
+static void draw_winner(void) {
     u8 window0[] = {
         16, 16, 16, 16, 16, 16, 16, 16, 16, 16,  // 0
         16, 16, 16, 16, 16, 16, 16, 16, 16, 16,  // 0
@@ -23,14 +23,14 @@ static void draw_gameover(void) {
     set_win_tiles(0, 2, 20, 3, window1);
     VBK_REG = VBK_BANK_0;
     set_win_tiles(0, 2, 20, 3, window0);
-    set_win_tiles(6, 3, 8, 1, "GAMEOVER");
+    set_win_tiles(5, 3, 10, 1, "YOU WINNER");
     scroll_win(0, -24);
-    u8 sadSmile[] = {17, 18};
-    set_win_tiles(9, 1, 2, 1, sadSmile);
+    u8 coolSmile[] = {20, 21};
+    set_win_tiles(9, 0, 2, 1, coolSmile);
 }
 
-const struct GOVisualiserClass GOVisualiser = {
+const struct WinnerVisualiserClass WinnerVisualiser = {
 
-    .draw_gameover = draw_gameover,
+    .draw_winner = draw_winner,
 
 };

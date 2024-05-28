@@ -32,6 +32,11 @@ set title=classes/Title/TitleLogic.o classes/Title/TitleVisualiser.o
 %CC% -c -o classes/GameOver/GOVisualiser.o classes/GameOver/GOVisualiser.c
 set gameover=classes/GameOver/GOLogic.o classes/GameOver/GOVisualiser.o
 
+@REM WINNER
+%CC% -c -o classes/Winner/WinnerLogic.o classes/Winner/WinnerLogic.c
+%CC% -c -o classes/Winner/WinnerVisualiser.o classes/Winner/WinnerVisualiser.c
+set winner=classes/Winner/WinnerLogic.o classes/Winner/WinnerVisualiser.o
+
 @REM GAME
 %CC% -c -o classes/Game/PlaneData.o classes/Game/PlaneData.c
 %CC% -c -o classes/Game/GameVisualiser.o  classes/Game/GameVisualiser.c
@@ -40,7 +45,7 @@ set gameover=classes/GameOver/GOLogic.o classes/GameOver/GOVisualiser.o
 %CC% -c -o classes/Game/GameLogic.o classes/Game/GameLogic.c
 set game=classes/Game/PlaneData.o classes/Game/GameVisualiser.o classes/Game/Cursor.o classes/Game/PlaneFabric.o classes/Game/GameLogic.o
 
-set classes=%game% %title% %gameover%
+set classes=%game% %title% %gameover% %winner%
 
 @REM Compile a .gb file from the compiled .o files
 if %FORMAT% EQU gbc (

@@ -57,10 +57,10 @@
 #define bkgTilesCGBPal0c3 20
 
 /* Gameboy Color palette 1 */
-#define bkgTilesCGBPal1c0 29670
-#define bkgTilesCGBPal1c1 5
-#define bkgTilesCGBPal1c2 2132
-#define bkgTilesCGBPal1c3 0
+#define bkgTilesCGBPal1c0 31674
+#define bkgTilesCGBPal1c1 32621
+#define bkgTilesCGBPal1c2 32267
+#define bkgTilesCGBPal1c3 3107
 
 /* Gameboy Color palette 2 */
 #define bkgTilesCGBPal2c0 32767
