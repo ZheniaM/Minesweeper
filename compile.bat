@@ -15,7 +15,8 @@ set CC=c:\gbdk\bin\lcc -Wa-l -Wl-m -Wl-j
 %CC% -c -o data/bkgMap.o  data/bkgMap.c
 %CC% -c -o data/cursores.o data/cursores.c
 %CC% -c -o data/TitleMap.o data/TitleMap.c
-set data=data/bkg.o data/bkgMap.o data/sprites.o data/cursores.o data/TitleMap.o
+%CC% -c -o data/MINESWIPPER.o data/MINESWIPPER.c
+set data=data/bkg.o data/bkgMap.o data/sprites.o data/cursores.o data/TitleMap.o data/MINESWIPPER.o
 
 @REM INCLUDE
 %CC% -c -o include/printer.o include/printer.c

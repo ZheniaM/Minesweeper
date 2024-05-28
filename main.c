@@ -7,6 +7,7 @@
 #include "classes/Logic.h"
 #include "classes/Title/TitleLogic.h"
 #include "classes/Winner/WinnerLogic.h"
+#include "data/MINESWIPPER.h"
 #include "data/bkg.h"
 #include "data/cursores.h"
 #include "include/short_types.h"
@@ -43,20 +44,30 @@ void init(void) {
     set_sprite_data(0, 3, cursoreData);
 }
 
+void download_label(void) {
+    VBK_REG = VBK_BANK_1;
+    set_bkg_tiles(0, 0, 21, 18, mineswipperLabelPLN1);
+    VBK_REG = VBK_BANK_0;
+    set_bkg_tiles(0, 0, 21, 18, mineswipperLabelPLN0);
+    scroll_bkg(4, 0);
+}
+
 int main(void) {
     if (CGB_TYPE == _cpu) {
         cpu_fast();
     }
     init();
+    download_label();
 
     SHOW_WIN;
-    TitleLogic.start();
-    // GameLogic.start(8, 8, 10);
-
     SHOW_SPRITES;
     SHOW_BKG;
     DISPLAY_ON;
 
+    move_win(0, 144);
+    while (joypad() != J_A);
+
+    TitleLogic.start();
     clock_t frame = get_time();
     Logic *l = TitleLogic.logic;
     while (TRUE) {
